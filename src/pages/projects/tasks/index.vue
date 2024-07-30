@@ -4,23 +4,23 @@ import { ref } from 'vue'
 import { RouterLink } from 'vue-router'
 import type { Tables } from '../../../database/types'
 
-const projects = ref<Tables<'projects'>[] | null>(null)
+const tasks = ref<Tables<'tasks'>[] | null>(null)
 ;(async () => {
-  const { data, error } = await supabase.from('projects').select()
+  const { data, error } = await supabase.from('tasks').select()
 
   if (error) console.log(error)
 
-  projects.value = data
+  tasks.value = data
 })()
 </script>
 
 <template>
   <div>
-    <h1>ProjectsView</h1>
-    <RouterLink to="/">Go Home</RouterLink>
+    <h1>TasksView</h1>
+    <RouterLink to="/projects">Go Projects</RouterLink>
     <ul>
-      <li v-for="project in projects" :key="project.id">
-        {{ project.id }}
+      <li v-for="tasks in tasks" :key="tasks.id">
+        {{ tasks.name }}
       </li>
     </ul>
   </div>
