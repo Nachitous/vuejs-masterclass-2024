@@ -1,11 +1,14 @@
 <script setup lang="ts">
-import { supabase } from '@/lib/supabaseClient'
-
-console.log(supabase)
+import Sidebar from './components/ui/layout/Sidebar.vue'
+import TopNavbar from './components/ui/layout/TopNavbar.vue'
 </script>
 
 <template>
-  <main>
-    <RouterView />
-  </main>
+  <Sidebar />
+  <div class="flex flex-col lg:ml-52 ml-16 transition-[margin]">
+    <TopNavbar />
+    <main>
+      <RouterView />
+    </main>
+  </div>
 </template>
