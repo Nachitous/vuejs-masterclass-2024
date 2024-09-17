@@ -1,37 +1,21 @@
 <script setup lang="ts">
-import { supabase } from '@/lib/supabaseClient'
-import { Fullscreen } from 'lucide-vue-next'
+import { register } from '@/utils/supaAuth'
 
 const formData = ref({
-  userName: '',
-  firstName: '',
-  lastName: '',
   email: '',
   password: '',
-  confirmPassword: ''
+  confirmPassword: '',
+  username: '',
+  firstName: '',
+  lastName: ''
 })
 
 const router = useRouter()
 
 const signup = async () => {
-  const { data, error } = await supabase.auth.signUp({
-    email: formData.value.email,
-    password: formData.value.password
-  })
+  const isRegistered = await register(formData.value)
 
-  if (error) return console.log(error)
-
-  if (data.user) {
-    const { error } = await supabase.from('profiles').insert({
-      id: data.user.id,
-      username: formData.value.userName,
-      full_name: formData.value.firstName.concat(' ', formData.value.lastName)
-    })
-
-    if (error) console.log('Profiles error: ', error)
-  }
-
-  router.push('/')
+  if (isRegistered) router.push('/')
 }
 </script>
 
@@ -57,7 +41,7 @@ const signup = async () => {
               type="text"
               placeholder="johndoe19"
               required
-              v-model="formData.userName"
+              v-model="formData.username"
             />
           </div>
           <div class="flex flex-col sm:flex-row justify-between gap-4">
