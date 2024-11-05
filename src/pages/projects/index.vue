@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { columns } from '@/utils/tableColumns/projectsColumns'
-import { projectsQuery } from '@/utils/supaQueries'
-import type { Projects } from '@/utils/supaQueries'
 
 usePageStore().pageData.title = 'Projects'
 
@@ -10,6 +8,11 @@ const { projects } = storeToRefs(projectsLoader)
 const { getProjects } = projectsLoader
 
 await getProjects()
+const { getGroupedCollabs, groupedCollabs } = useCollabs()
+
+await getGroupedCollabs(projects.value)
+console.log('test:: ', groupedCollabs.value)
+// getGroupedCollabs(projects.value)
 </script>
 
 <template>
