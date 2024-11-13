@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { projectQuery } from '@/utils/supaQueries'
-import type { Project } from '@/utils/supaQueries'
+const { slug } = useRoute('/projects/[slug]').params
 
-const route = useRoute('/projects/[slug]')
-
-const project = ref<Project | null>(null)
+const projectsLoader = useProjectsStore()
+const { project } = storeToRefs(projectsLoader)
+const { getProject } = projectsLoader
 
 watch(
   () => project.value?.name,
@@ -13,15 +12,7 @@ watch(
   }
 )
 
-const getProject = async (slug: string) => {
-  const { data, error, status } = await projectQuery(slug)
-
-  if (error) useErrorStore().setError({ error, customCode: status })
-
-  project.value = data
-}
-
-await getProject(route.params.slug)
+await getProject(slug)
 </script>
 <template>
   <Table v-if="project">
