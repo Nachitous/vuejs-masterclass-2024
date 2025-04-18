@@ -2,6 +2,8 @@
 import { profileQuery } from '@/utils/supaQueries'
 import type { Tables } from 'database/types'
 
+usePageStore().pageData.title = ''
+
 const { username } = useRoute('/users/[username]').params
 const profile = ref<Tables<'profiles'> | null>(null)
 

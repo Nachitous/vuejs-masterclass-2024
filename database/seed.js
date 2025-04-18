@@ -3,7 +3,10 @@
 import { fakerEN_US as faker } from '@faker-js/faker'
 import { createClient } from '@supabase/supabase-js'
 
-const supabase = createClient(process.env.VITE_SUPABASE_URL, process.env.SERVICE_ROLE_KEY)
+const supabase = createClient(
+  process.env.VITE_SUPABASE_URL,
+  process.env.VITE_SUPABASE_KEY
+)
 
 const testingUserEmail = process.env.TESTING_USER_EMAIL
 if (!testingUserEmail) {
@@ -27,7 +30,7 @@ const PrimaryTestUserExists = async () => {
   const { data, error } = await supabase
     .from('profiles')
     .select('id, username')
-    .eq('username', 'testaccount1')
+    .eq('username', process.env.TESTING_USER_USERNAME)
     .single()
 
   if (error) {
@@ -41,13 +44,13 @@ const PrimaryTestUserExists = async () => {
 
 const createPrimaryTestUser = async () => {
   logStep('Creating primary test user...')
-  const firstName = 'Test'
-  const lastName = 'Account'
-  const userName = 'testaccount1'
+  const firstName = process.env.TESTING_USER_FIRST_NAME
+  const lastName = process.env.TESTING_USER_LAST_NAME
+  const userName = process.env.TESTING_USER_USERNAME
   const email = testingUserEmail
   const { data, error } = await supabase.auth.signUp({
     email: email,
-    password: 'password',
+    password: process.env.TESTING_USER_PASSWORD,
     options: {
       data: {
         first_name: firstName,
@@ -93,7 +96,10 @@ const seedProjects = async (numEntries, userId) => {
     })
   }
 
-  const { data, error } = await supabase.from('projects').insert(projects).select('id')
+  const { data, error } = await supabase
+    .from('projects')
+    .insert(projects)
+    .select('id')
 
   if (error) return logErrorAndExit('Projects', error)
 
@@ -118,7 +124,10 @@ const seedTasks = async (numEntries, projectsIds, userId) => {
     })
   }
 
-  const { data, error } = await supabase.from('tasks').insert(tasks).select('id')
+  const { data, error } = await supabase
+    .from('tasks')
+    .insert(tasks)
+    .select('id')
 
   if (error) return logErrorAndExit('Tasks', error)
 
@@ -139,7 +148,9 @@ const seedDatabase = async (numEntriesPerTable) => {
     userId = testUserId
   }
 
-  const projectsIds = (await seedProjects(numEntriesPerTable, userId)).map((project) => project.id)
+  const projectsIds = (await seedProjects(numEntriesPerTable, userId)).map(
+    (project) => project.id
+  )
   await seedTasks(numEntriesPerTable, projectsIds, userId)
 }
 
