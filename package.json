@@ -20,16 +20,18 @@
     "supabase:types": "npx supabase gen types --lang=typescript --project-id tadiqriawolijjhpsndm --schema public > database/types.ts"
   },
   "dependencies": {
+    "@formkit/vue": "^1.6.9",
     "@supabase/supabase-js": "^2.43.4",
     "@tanstack/vue-table": "^8.20.1",
     "@vueuse/core": "^10.11.1",
-    "class-variance-authority": "^0.7.0",
+    "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "iconify-icon": "^2.1.0",
     "lucide-vue-next": "^0.418.0",
     "pinia": "^2.1.7",
     "radix-vue": "^1.9.2",
-    "tailwind-merge": "^2.4.0",
+    "reka-ui": "^2.2.0",
+    "tailwind-merge": "^2.6.0",
     "tailwindcss-animate": "^1.0.7",
     "vue": "^3.5.12",
     "vue-router": "^4.4.3"
